@@ -1,0 +1,90 @@
+{
+    "Costs": {
+        "Type": [
+            null,
+            "Maintenance",
+            "Repair",
+            "Change tires",
+            "Change oil",
+            "Insurance",
+            "Tax",
+            "Supervisory board",
+            "Tuning",
+            "Accessories",
+            "Purchase price",
+            "Miscellaneous",
+            "Care",
+            "Payment",
+            "Registration",
+            "Financing",
+            "Refund",
+            "Fine",
+            "Parking tax",
+            "Toll",
+            "Spare parts"
+        ]
+    },
+    "Fuelings": {
+        "Type": [
+            "invalid fueling",
+            "full fueling",
+            "partial fueling",
+            "first fueling"
+        ],
+        "Tires": [
+            null,
+            "summer tires",
+            "winter tires",
+            "all-year tires"
+        ],
+        "Roads": [
+            null,
+            null,
+            "motor-way",
+            null,
+            "city",
+            null,
+            "motor-way, city",
+            null,
+            "country roads",
+            null,
+            "motor-way, country roads",
+            null,
+            "city, country roads",
+            null,
+            "motor-way, city, country roads"
+        ],
+        "Driving style": [
+            null,
+            "moderate",
+            "normal",
+            "fast"
+        ],
+        "Fuel": [
+            null,
+            "Diesel",
+            "Biodiesel",
+            "Vegetable oil",
+            "Premium Diesel",
+            null,
+            "Normal gasoline",
+            "Super gasoline",
+            "SuperPlus gasoline",
+            "Premium Gasoline 100",
+            null,
+            null,
+            "LPG",
+            "CNG H",
+            "CNG L",
+            "Bio-alcohol",
+            "Two-stroke",
+            null,
+            "Premium Gasoline 95",
+            "Electricity",
+            "E10",
+            "AdBlue",
+            "Premium Gasoline 100+",
+            "Hydrogen"
+        ]
+    }
+}
