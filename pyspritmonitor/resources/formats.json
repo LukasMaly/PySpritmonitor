@@ -1,6 +1,6 @@
 {
     "Costs": {
-        "Type": [
+        "Cost type": [
             null,
             "Maintenance",
             "Repair",

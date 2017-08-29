@@ -1,1 +1,2 @@
-from pyspritmonitor.read import read_costs_csv, read_fuelings_csv
+from pyspritmonitor.costs import Costs
+from pyspritmonitor.fuelings import Fuelings
