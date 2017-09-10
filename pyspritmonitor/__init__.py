@@ -1,2 +1,2 @@
-from pyspritmonitor.costs import Costs
-from pyspritmonitor.fuelings import Fuelings
+from .costs import Costs
+from .fuelings import Fuelings
