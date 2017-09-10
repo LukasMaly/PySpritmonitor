@@ -3,13 +3,13 @@ import pandas as pd
 
 
 class Fuelings:
-    def __init__(self, filepath, json_in_note=True, time_columns='BC-Time'):
+    def __init__(self, filepath, json_in_note=False, time_columns=None):
         self.__df_original = self.__read_fuelings_csv(filepath, json_in_note, time_columns)
         self.__df_formatted = self.__format(self.__df_original[:])
         self.df = self.__calculate(self.__df_formatted[:])
 
-    def __read_fuelings_csv(self, filepath, json_in_note=False,
-                          time_columns=None):
+    def __read_fuelings_csv(self, filepath, json_in_note,
+                          time_columns):
         """Read fueling entries exported as CSV"""
         df = pd.read_csv(filepath, sep=';', parse_dates=[0], dayfirst=True,
                          decimal=',', escapechar='\\')
