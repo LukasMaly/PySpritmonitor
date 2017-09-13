@@ -1,34 +1,12 @@
-import json
-import pandas as pd
+from .entries import Entries
 
 
-class Fuelings:
+class Fuelings(Entries):
+    """Class for fuelings entries"""
     def __init__(self, filepath, json_in_note=False, time_columns=None):
-        self.__df_original = self.__read_fuelings_csv(filepath, json_in_note, time_columns)
+        self.__df_original = super()._read_csv(filepath, json_in_note, time_columns)
         self.__df_formatted = self.__format(self.__df_original[:])
         self.df = self.__calculate(self.__df_formatted[:])
-
-    def __read_fuelings_csv(self, filepath, json_in_note,
-                          time_columns):
-        """Read fueling entries exported as CSV"""
-        df = pd.read_csv(filepath, sep=';', parse_dates=[0], dayfirst=True,
-                         decimal=',', escapechar='\\')
-        if json_in_note:
-            df = self.__convert_json_columns(df, 'Note')
-        if time_columns:
-            df = self.__convert_time_columns(df, time_columns)
-        return df
-
-    def __convert_json_columns(self, df, columns):
-        """Convert JSON from selected columns to separate columns"""
-        df = df.join(df[columns].dropna().apply(json.loads).apply(pd.Series))
-        df.drop(columns, 1, inplace=True)
-        return df
-
-    def __convert_time_columns(self, df, columns):
-        """Convert string in format MM:HH:SS to Timedelta"""
-        df[columns] = df[columns].apply(pd.to_timedelta)
-        return df
 
     def __format(self, df):
         "Format fueling numeric columns"
