@@ -1,8 +1,12 @@
 # pyspritmonitor
 
-Python package for reading Spritmonitor.de data exported as CSV
+Python package for reading Spritmonitor.de's CSV data.
 
 ## Usage
+
+It is possible to pass paths to CSV files stored locally or obtain data directly from Spritmonitor.de by providing login credentials and vehicle's ID.
+
+### CSVs stored locally
 
 Export the fueling and cost entries from https://www.spritmonitor.de/ as CSV files.
 
@@ -12,7 +16,7 @@ Import classes `Costs` and `Fuelings` from `pyspritmonitor` module.
 from pyspritmonitor import Costs, Fuelings
 ```
 
-Pass path to CSV file as argument to `Costs` or `Fuelings`.
+Pass path to CSV file as argument to `Costs` and `Fuelings`.
 
 ```Python
 costs = Costs('data/853999_costs.csv')
@@ -25,6 +29,29 @@ Then you can access data as DataFrame type:
 print(costs.df)
 print(fuelings.df)
 ```
+
+### Obtain data from Spritmonitor.de
+
+Import class `Login` from `pyspritmonitor` module.
+
+```Python
+from pyspritmonitor import Login, Costs, Fuelings
+```
+
+Provide class instance with your username, password and vehicle's ID.
+
+```Python
+login = Login(username='MyUsername', password='MyPassword', vehicle_id='999999')
+```
+
+Then pass class `Login` variables `costs_csv` and `fuelings_csv` to classes `Costs` and `Fuelings`.
+
+```Python
+costs = Costs(login.costs_csv)
+fuelings = Fuelings(login.fuelings_csv)
+```
+
+The rest remains same as when accessing CSVs stored locally described above.
 
 ### JSON in Note
 

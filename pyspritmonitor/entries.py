@@ -1,11 +1,12 @@
 import json
 import pandas as pd
 
+
 class Entries:
     """Base class for entries"""
-    def _read_csv(self, filepath, json_in_note, time_columns):
+    def _read_csv(self, csv, json_in_note, time_columns):
         """Read entries exported as CSV"""
-        df = pd.read_csv(filepath, sep=';', parse_dates=[0], dayfirst=True,
+        df = pd.read_csv(csv, sep=';', parse_dates=[0], dayfirst=True,
                          decimal=',', escapechar='\\')
         if json_in_note:
             df = self.__convert_json_columns(df, 'Note')

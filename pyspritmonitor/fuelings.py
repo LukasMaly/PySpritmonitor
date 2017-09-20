@@ -3,8 +3,8 @@ from .entries import Entries
 
 class Fuelings(Entries):
     """Class for fuelings entries"""
-    def __init__(self, filepath, json_in_note=False, time_columns=None):
-        self.__df_original = super()._read_csv(filepath, json_in_note, time_columns)
+    def __init__(self, csv, json_in_note=False, time_columns=None):
+        self.__df_original = super()._read_csv(csv, json_in_note, time_columns)
         self.__df_formatted = self.__format(self.__df_original[:])
         self.df = self.__calculate(self.__df_formatted[:])
 
