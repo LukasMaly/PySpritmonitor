@@ -7,8 +7,8 @@ def load_formats():
 
     resource_package = __name__
     resource_path = '/'.join(('resources', 'formats.json'))
-    formats = json.load(pkg_resources.resource_stream(resource_package,
-                                                 resource_path))
+    formats = json.load(pkg_resources.resource_stream(resource_package, resource_path))
     return formats
+
 
 formats = load_formats()

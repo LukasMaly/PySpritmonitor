@@ -1,37 +1,18 @@
-import json
-import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from .entries import Entries
 
 
-class Fuelings:
-    def __init__(self, filepath, json_in_note=False, time_columns=None):
-        self.__df_original = self.__read_fuelings_csv(filepath, json_in_note, time_columns)
+class Fuelings(Entries):
+    """Class for fuelings entries"""
+    def __init__(self, csv, json_in_note=False, time_columns=None):
+        self.__df_original = super()._read_csv(csv, json_in_note, time_columns)
         self.__df_formatted = self.__format(self.__df_original[:])
         self.df = self.__calculate(self.__df_formatted[:])
 
-    def __read_fuelings_csv(self, filepath, json_in_note,
-                          time_columns):
-        """Read fueling entries exported as CSV"""
-        df = pd.read_csv(filepath, sep=';', parse_dates=[0], dayfirst=True,
-                         decimal=',', escapechar='\\')
-        if json_in_note:
-            df = self.__convert_json_columns(df, 'Note')
-        if time_columns:
-            df = self.__convert_time_columns(df, time_columns)
-        return df
-
-    def __convert_json_columns(self, df, columns):
-        """Convert JSON from selected columns to separate columns"""
-        df = df.join(df[columns].dropna().apply(json.loads).apply(pd.Series))
-        df.drop(columns, 1, inplace=True)
-        return df
-
-    def __convert_time_columns(self, df, columns):
-        """Convert string in format MM:HH:SS to Timedelta"""
-        df[columns] = df[columns].apply(pd.to_timedelta)
-        return df
-
     def __format(self, df):
-        "Format fueling numeric columns"
+        """Format fueling numeric columns"""
         df = self.__numerics_to_strings(df)
         df = self.__roads_to_columns(df)
         return df
@@ -66,5 +47,63 @@ class Fuelings:
     def __calculate_unit_price(df):
         """Calculate fuel unit price based on total price and quantity"""
         unit_price = df['Total price'] / df['Quantity']
+        unit_price = unit_price.round(1)  # round to one decimal
         df.insert(5, 'Unit price', unit_price)
         return df
+
+    def get_summary(self):
+        """Return summary row"""
+        import pandas as pd
+        summary = pd.Series(self.df[['Quantity', 'Total price', 'BC-Time']].sum())
+        summary = summary.append(pd.Series(self.df[['Unit price', 'Consumption', 'BC-Consumption', 'BC-Speed', 'BC-DriveGreen']].iloc[1:, ].apply(lambda x: np.average(x, weights=self.df['Trip'].iloc[1:].values))))
+        return summary
+
+    def plot_date_odometer(self):
+        self.df['Odometer'].plot(title='Odometer', legend=False)
+        plt.ylabel('Odometer (km)')
+        sns.set()
+        plt.show(block=False)
+
+    def plot_date_trip(self):
+        self.df['Trip'].plot(kind='bar', title='Trip', legend=False, edgecolor='k')
+        xtl = self.df['Trip'].index.map(lambda t: t.strftime('%Y-%m-%d'))
+        plt.xticks(range(len(self.df['Trip'])), xtl, rotation=30)
+        plt.xlabel('Date')
+        plt.ylabel('Trip (km)')
+        sns.set()
+        plt.show(block=False)
+
+    def plot_date_trip_cum(self):
+        blank = self.df['Trip'].cumsum().shift(1).fillna(0)
+        plot = self.df['Trip'].plot(kind='bar', title='Trip', legend=False, stacked=True, bottom=blank, edgecolor='k')
+        plot.hlines(blank.values, range(-1, len(blank)-1), range(0, len(blank)), linewidth=1)
+        sns.set()
+        plt.show(block=False)
+
+    def plot_date_quantity(self):
+        self.df['Quantity'].plot(kind='bar', title='Fuel quantity', legend=False, edgecolor='k')
+        plt.ylabel('Quantity (l)')
+        plt.ylim(ymin=0)
+        sns.set()
+        plt.show(block=False)
+
+    def plot_date_totalprice(self):
+        self.df['Total price'].plot(kind='bar', title='Fuel total price', legend=False, edgecolor='k')
+        plt.ylabel('Total price (' + self.df['Currency'][0] + ')')
+        plt.ylim(ymin=0)
+        sns.set()
+        plt.show(block=False)
+
+    def plot_date_unitprice(self):
+        self.df['Unit price'].plot(kind='bar', title='Fuel unit price', legend=False, edgecolor='k')
+        plt.ylabel('Unit price (' + self.df['Currency'][0] + ')')
+        plt.ylim(ymin=0)
+        sns.set()
+        plt.show(block=False)
+
+    def plot_date_consumption(self):
+        self.df['Consumption'].plot(kind='bar', title='Fuel consumption', legend=False, edgecolor='k')
+        plt.ylabel('Consumption (l/100 km)')
+        plt.ylim(ymin=0)
+        sns.set()
+        plt.show(block=False)
