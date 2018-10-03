@@ -1,10 +1,10 @@
-# pyspritmonitor
+# PySpritmonitor
 
 Python package for reading Spritmonitor.de's CSV data.
 
 ## Usage
 
-It is possible to pass paths to CSV files stored locally or obtain data directly from Spritmonitor.de by providing login credentials and vehicle's ID.
+Either pass paths to CSV files stored locally or obtain data directly from Spritmonitor.de by providing login credentials and vehicle's ID.
 
 ### CSVs stored locally
 
@@ -20,7 +20,7 @@ Pass path to CSV file as argument to `Costs` and `Fuelings`.
 
 ```Python
 costs = Costs('data/853999_costs.csv')
-fuelings = Fuelings'data/853999_fuelings.csv')
+fuelings = Fuelings('data/853999_fuelings.csv')
 ```
 
 Then you can access data as DataFrame type:

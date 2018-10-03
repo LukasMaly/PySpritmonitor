@@ -52,7 +52,7 @@ class Fuelings(Entries):
         return df
 
     def get_summary(self):
-        """Append summary row"""
+        """Return summary row"""
         import pandas as pd
         summary = pd.Series(self.df[['Quantity', 'Total price', 'BC-Time']].sum())
         summary = summary.append(pd.Series(self.df[['Unit price', 'Consumption', 'BC-Consumption', 'BC-Speed', 'BC-DriveGreen']].iloc[1:, ].apply(lambda x: np.average(x, weights=self.df['Trip'].iloc[1:].values))))
@@ -65,8 +65,7 @@ class Fuelings(Entries):
         plt.show(block=False)
 
     def plot_date_trip(self):
-        self.df['Trip'].plot(kind='bar', title='Trip', legend=False,
-                     edgecolor='k')
+        self.df['Trip'].plot(kind='bar', title='Trip', legend=False, edgecolor='k')
         xtl = self.df['Trip'].index.map(lambda t: t.strftime('%Y-%m-%d'))
         plt.xticks(range(len(self.df['Trip'])), xtl, rotation=30)
         plt.xlabel('Date')
@@ -76,41 +75,35 @@ class Fuelings(Entries):
 
     def plot_date_trip_cum(self):
         blank = self.df['Trip'].cumsum().shift(1).fillna(0)
-        plot = self.df['Trip'].plot(kind='bar', title='Trip',
-                            legend=False, stacked=True, bottom=blank, edgecolor='k')
+        plot = self.df['Trip'].plot(kind='bar', title='Trip', legend=False, stacked=True, bottom=blank, edgecolor='k')
         plot.hlines(blank.values, range(-1, len(blank)-1), range(0, len(blank)), linewidth=1)
         sns.set()
         plt.show(block=False)
 
     def plot_date_quantity(self):
-        self.df['Quantity'].plot(kind='bar', title='Fuel quantity',
-                     legend=False, edgecolor='k')
+        self.df['Quantity'].plot(kind='bar', title='Fuel quantity', legend=False, edgecolor='k')
         plt.ylabel('Quantity (l)')
         plt.ylim(ymin=0)
         sns.set()
         plt.show(block=False)
 
     def plot_date_totalprice(self):
-        self.df['Total price'].plot(kind='bar', title='Fuel total price',
-                     legend=False, edgecolor='k')
+        self.df['Total price'].plot(kind='bar', title='Fuel total price', legend=False, edgecolor='k')
         plt.ylabel('Total price (' + self.df['Currency'][0] + ')')
         plt.ylim(ymin=0)
         sns.set()
         plt.show(block=False)
 
     def plot_date_unitprice(self):
-        self.df['Unit price'].plot(kind='bar', title='Fuel unit price',
-                     legend=False, edgecolor='k')
+        self.df['Unit price'].plot(kind='bar', title='Fuel unit price', legend=False, edgecolor='k')
         plt.ylabel('Unit price (' + self.df['Currency'][0] + ')')
         plt.ylim(ymin=0)
         sns.set()
         plt.show(block=False)
 
     def plot_date_consumption(self):
-        self.df['Consumption'].plot(kind='bar', title='Fuel consumption',
-                     legend=False, edgecolor='k')
+        self.df['Consumption'].plot(kind='bar', title='Fuel consumption', legend=False, edgecolor='k')
         plt.ylabel('Consumption (l/100 km)')
         plt.ylim(ymin=0)
         sns.set()
         plt.show(block=False)
-        

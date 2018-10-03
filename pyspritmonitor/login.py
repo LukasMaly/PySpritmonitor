@@ -1,6 +1,7 @@
 from io import StringIO
 import requests
 
+
 class Login:
     """Class for reading CSVs directly from Spritmonitor.de"""
     def __init__(self, username, password, vehicle_id):
