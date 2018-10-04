@@ -8,17 +8,17 @@ class Fuelings(Entries):
     """Class for fuelings entries"""
     def __init__(self, csv, json_in_note=False, time_columns=None):
         self.__df_original = super()._read_csv(csv, json_in_note, time_columns)
-        self.__df_formatted = self.__format(self.__df_original[:])
-        self.df = self.__calculate(self.__df_formatted[:])
+        self.__df_formatted = self._format(self.__df_original[:])
+        self.df = self._calculate(self.__df_formatted[:])
 
-    def __format(self, df):
+    def _format(self, df):
         """Format fueling numeric columns"""
-        df = self.__numerics_to_strings(df)
-        df = self.__roads_to_columns(df)
+        df = self._numerics_to_strings(df)
+        df = self._roads_to_columns(df)
         return df
 
     @staticmethod
-    def __numerics_to_strings(df):
+    def _numerics_to_strings(df):
         """Format fueling numeric columns to their string representation"""
         from .formats import formats
         columns_to_format = ['Type', 'Tires', 'Roads', 'Driving style', 'Fuel']
@@ -29,7 +29,7 @@ class Fuelings(Entries):
         return df
 
     @staticmethod
-    def __roads_to_columns(df):
+    def _roads_to_columns(df):
         """Separate road types to individual columns"""
         loc = df.columns.get_loc('Roads') + 1
         for road in ['motor-way', 'city', 'country roads']:
@@ -38,13 +38,13 @@ class Fuelings(Entries):
         del df['Roads']
         return df
 
-    def __calculate(self, df):
+    def _calculate(self, df):
         """Calculate new variables from available variables"""
-        df = self.__calculate_unit_price(df)
+        df = self._calculate_unit_price(df)
         return df
 
     @staticmethod
-    def __calculate_unit_price(df):
+    def _calculate_unit_price(df):
         """Calculate fuel unit price based on total price and quantity"""
         unit_price = df['Total price'] / df['Quantity']
         unit_price = unit_price.round(1)  # round to one decimal
